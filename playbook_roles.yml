@@ -1,0 +1,8 @@
+--- 
+- name: start role
+  hosts: all 
+  become: yes 
+  roles:
+    - deploy_install_Apache2
+    - darkwizard242.syft
+

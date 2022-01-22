@@ -1,0 +1,3 @@
+---
+# defaults file for deploy_install_Apache22
+destin_folder: /var/www/html

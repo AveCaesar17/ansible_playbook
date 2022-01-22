@@ -1,0 +1,66 @@
+---
+- hosts: all
+  become: yes
+  vars_files:
+    - vars.yml
+
+ 
+
+  handlers:
+    - name: restart apache
+      service: name=apache2 state=restarted 
+
+    - name: Add ondrej repository for later versions of PHP.
+      apt_repository: repo='ppa:ubuntu' update_cache=yes
+  tasks:
+    - name: Get software for apt repository managment
+      apt:
+        state: present
+        name:
+          - python3-apt
+          - python3-pycurl
+    - name: install gnupg2
+      apt:
+        state: present
+        name: gnupg2
+    - name: Install Apache,MySQL ,PHP
+      apt: 
+        state: present
+        name: 
+          - acl
+          - git
+          - curl
+          - unzip
+          - sendmail
+          - apache2
+          - php7.4-common
+          - php7.4-cli
+          - php7.4-dev
+          - php7.4-gd
+          - php7.4-curl
+          - php7.4-json
+          - php7.4-opcache
+          - php7.4-xml
+          - php7.4-mbstring
+          - php7.4-pdo
+          - php7.4-mysql
+          - php-apcu
+          - libpcre3-dev
+          - libapache2-mod-php7.4
+          - python3-mysqldb
+          - default-mysql-server
+          - ufw 
+      async: 100
+      poll: 3 
+   
+    - name: Start Apache,mySQL and PHP
+      apt:
+        state: present
+        name: docker.io
+    - name: start run
+      systemd:
+        name: "{{ item }}"
+        state: started
+      with_items: 
+       - apache2 
+       - mysql        

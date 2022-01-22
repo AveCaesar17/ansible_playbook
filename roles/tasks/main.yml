@@ -1,0 +1,42 @@
+---
+
+# tasks file for deploy_install_Apache2
+- block: #Block for RedHat
+    - name: install redhat
+      yum:
+        name: httpd
+        state: latest
+    - name: start httpd
+      service: 
+        name: httpd
+        state: started 
+        enabled : yes 
+  when: ansible_os_family == "RedHat"
+- block: #Block for Debian
+    - name: install apache for ubuntu 
+      apt:
+        name: apache2
+        state: latest
+    - name: start apache2 
+      shell:
+        cmd: service apache2 start
+    - name: enabled apache2 
+      shell:
+        cmd: systemctl enable apache2
+  when: ansible_os_family == "Debian"
+- name: copy file html
+  template: 
+    src: index.j2 
+    dest: "{{ destin_folder }}/index.html" 
+    mode: 0777
+  notify:
+    - Restart Apache for Debian 
+    - Restart Apache for RedHat
+- name: copy oll fils
+  copy:
+    src: files
+    dest: "{{ destin_folder }}" 
+    mode: 0777
+  notify:
+    - Restart Apache for Debian
+    - Restart Apache for RedHat

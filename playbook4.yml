@@ -1,0 +1,36 @@
+--- 
+- name: super playbook
+  hosts: all 
+  become: true
+
+
+  vars:
+    message1: privet
+    message2: world
+    secret: password
+  tasks: 
+  - name: print secret 
+    debug: 
+      var: secret 
+  - name : deb
+    debug:
+      msg: "Secreetnoe slovo : {{ secret }}"
+  - name : deb2
+    debug:
+      msg: "vladelec etogo servera {{ owner }}"                                 
+  - name : set_fact
+    set_fact: 
+      full_message : "{{ message1 }} {{ message2 }} from {{ owner }}"
+  - name: deb3 
+    debug:
+      msg: "{{ full_message }}"
+  - name: print os_family
+    debug:
+      var: ansible_os_family
+  - name: print dis
+    debug:
+      var: ansible_distribution
+  - shell : date
+    register: results
+  - debug:
+      var: results.stdout

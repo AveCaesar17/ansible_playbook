@@ -1,0 +1,4 @@
+
+---
+# vars file for deploy_install_Apache2
+destin_folder: /var/www/html

@@ -1,0 +1,53 @@
+---
+- name: Loops playbook
+  hosts: all 
+  become: true
+  vars:
+    source_folder: /root/files 
+    destin_folder: /root
+  tasks:
+  
+  - name: say hello to all
+    debug: msg="Hello {{ item }}"
+    loop:
+      - Vasya
+      - petr
+      - ivan
+  - name: get os 
+    debug:
+       var: ansible_os_family
+  - name: Loop until example 
+    shell:
+      cmd: echo -n z >> myfile.txt && cat myfile.txt
+    register: output
+    delay: 2 
+    retries: 10 
+    until: output.stdout.find("zzzz") == false
+  - name: print output final 
+    debug:
+      var: output.stdout 
+  - name: clear file
+    copy:
+      content: "z"
+      dest: /myfile.txt
+  
+#  - name: copy dir
+ #   copy:
+  #    src: "{{ source_folder }}"
+   #   dest: "{{ destin_folder }}" 
+  - name: Generate index.html file 
+    template:
+      src: "{{ source_folder }}/file1.j2"
+      dest: "{{ destin_folder }}/index.html"
+      mode: 0777
+   
+   
+#  - name: del dir or files
+ #   file: 
+  #    state: absent
+   #   path: "{{ destin_folder }}/files"
+ # - name: copy with filelob            
+  #  copy: 
+   #   src: "{{ item }}" 
+    #  dest: "{{ destin_folder }}" 
+   # with_fileglob: "{{ source_folder }}/*.*"

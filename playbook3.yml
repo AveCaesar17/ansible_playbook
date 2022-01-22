@@ -1,0 +1,19 @@
+---
+- name: copy
+  hosts: all 
+  become: true
+  vars:
+    source_file: /root/info1.txt
+    destin_file: /home/caesar
+  tasks:
+  - name: copy
+    copy:
+      src: "{{ source_file }}"
+      dest: "{{ destin_file }}"
+      mode: 0555
+    notify: restart apache
+  handlers:
+  - name: restart apache
+    shell:
+      cmd: service apache2 restart  
+

@@ -1,0 +1,40 @@
+---
+- name: Install default Apache web servers
+  hosts: all
+  become: true
+  vars: 
+    source_txt: /root/info1.txt
+    des: /home/caesar 
+  tasks:
+  - block: 
+     - name: install debian apache 
+       apt:
+         name: apache2
+         state: latest
+     - name: copy txt
+       copy:
+         src: "{{ source_txt }}" 
+         dest: "{{ des }}"
+       notify: Restart apache for Debian 
+    when: ansible_os_family == "Debian"
+ 
+  - block: 
+     - name: install httpd for red_hat
+       yum: 
+         name: httpd
+         state: latest 
+     - name: copy 
+       copy: 
+         src: "{{ source_txt }}"
+         dest: "{{ des }}" 
+       notify: Restart apache for RedHat
+    when: ansible_os_family == "RedHat" 
+  handlers:
+  - name: Restart apache for Debian
+    shell:
+      cmd: service apache2 restart
+  - name: Resatrt apache for RedHat
+    service: 
+      name: httpd
+      state: restarted 
+      enabled: yes

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Login</title>
+
+</head>
+<body>
+  <div class="header">
+      <div class="header-line">
+        <div class="logo">
+          </div>
+      </div>
+  </div>
+  <div class="case">
+    <form action="http://localhost:80/v1/users/login" method="post">
+      <div class="text">Войдите {{ owner }} мне {{ age }} лет
+ </div>
+      <input type="mail" name="email" placeholder="Login">
+      <input type="password" name="password" placeholder="Passwrod">
+      <button class="button1">Вход</button>
+    </form>
+  </div>
+Server os family: {{ ansible_os_family }}<br>
+ipv1 : 172.20.152.48<br>
+
+</body

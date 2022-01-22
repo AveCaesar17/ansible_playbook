@@ -1,0 +1,52 @@
+- hosts: all
+  gather_facts: yes
+  tasks:
+  - name: info details
+    debug: msg="{{ item }}"
+    with_items: 
+    - "{{ ansible_distribution }}"
+    - "{{ ansible_distribution_release }}" 
+    - "{{ ansible_distribution_version }}"
+    - "{{ ansible_distribution_major_version }}"
+  - name: st
+    apt:
+      name: apache2
+      state: latest
+    when: ansible_os_family == "Debian"
+  - name: ip 
+    shell:
+      cmd: "ifconfig >> /root/cat.txt | cat /proc/meminfo >> /root/cat.txt"
+    when: ansible_distribution == "Ubuntu" or ansible_distibution == "Debian"
+  - name: check memory Ubuntu 
+    shell:
+      cmd: "cat /proc/meminfo >> /root/cat.txt"
+    when: ansible_distribution == "Ubuntu"
+  - name: chech memory debian 
+    shell:
+      cmd: "cat /proc/meminfo >> /root/cat.txt"
+    when: ansible_distribution == "Debian"
+  - name: version packet 
+    shell:
+      cmd: "sudo apt list --installed"
+    when: ansible_distribution == "Ubuntu"
+  - name: version packet Debian
+    shell:
+      cmd: "dpkg-query -l >> /root/cat.txt"
+    when: ansible_distribution == "Debian"
+  - name: check ports ubuntu
+    shell:
+      cmd: " netstat -ntlp | grep LISTEN >> /root/cat.txt"
+    when: ansible_distribution == "Ubuntu" or ansible_distibution == "Debian"
+  - name: check dist Ubuntu
+    shell:
+      cmd: "df -h >> /root/cat.txt"
+    when:  ansible_distribution == "Ubuntu"
+  - name: check disk Debian
+    shell:
+      cmd: "lsblk -a >> /root/cat.txt"
+    when: ansible_distibution == "Debian"
+    
+  - name: check process Ubuntu
+    shell:
+      cmd: "systemctl list-units --type=service --state=running >> /root/cat.txt"
+    when: ansible_distribution == "Ubuntu" or ansible_distibution == "Debian"

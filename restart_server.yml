@@ -1,0 +1,21 @@
+---
+- name: check restart server
+  hosts: all 
+  become: yes
+  
+  tasks: 
+  - name: restart server 
+    shell:
+      cmd: sleep 3 && reboot now
+    async: 1 
+    poll: 0 
+  
+
+
+  - name: check connection 
+    wait_for: 
+      host: server1
+      state: started
+      delay: 10
+      timeout: 60 
+    delegate_to: 127.0.0.1 

@@ -1,0 +1,16 @@
+- hosts: servers 
+  vars:
+    web_root: /var/www/html
+    version: "6.0"
+  tasks: 
+  - name: Install 
+    apt: 
+      name: nano
+      state: present
+      update_cache: false
+      
+  - name: get
+    get_url:
+      url: http://download.sonatype.com/nexus/3/nexus-3.22.0-02-unix.tar.gz
+      dest: /root
+      mode: 0777    

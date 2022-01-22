@@ -1,0 +1,26 @@
+---
+
+- name: errors 
+  hosts: all 
+  become: yes
+  any_errors_fatal: true
+
+  tasks: 
+  - name: Task1
+    apt: 
+      name: treeee
+      state: latest
+    ignore_errors: yes   
+  - name: Task  
+    shell: 
+      cmd: echo hello world
+    register: result
+    failed_when: "'popa' in result.stdout" 
+  - debug:
+      var: result.stdout 
+  - name: task3 
+    shell: 
+      cmd: echo hrllo dada
+    register: results
+  - debug:
+      var: results.stdout  
