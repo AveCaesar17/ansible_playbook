@@ -1,0 +1,24 @@
+---
+
+  
+  - name: d
+    debug: msg="Hello"    
+  - name: ff
+    apt:
+      name: build-essential
+      state: latest
+  - name: fe 
+    apt:
+      name: nano
+      state: latest
+  - name: gh
+    template:
+      src: install_brew.j2
+      dest: /home/caesar/install_brew.sh
+      owner: caesar
+      group: caesar
+      mode: 0777
+  - name: start sh 
+    shell:
+      cmd: sh /home/caesar/install_brew.sh
+ 
