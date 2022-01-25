@@ -1,0 +1,10 @@
+#!/bin/bash
+
+#wget https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh
+#chmod 777 install.sh
+bash install.sh
+#bash install.sh
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+brew tap anchore/grype
+brew install grype
+
