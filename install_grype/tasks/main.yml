@@ -1,31 +1,31 @@
----    
+---
   - name: install build-essential
     apt:
       name: build-essential
       state: latest
-  - block: 
-     - name: install for Debian 
+  - block:
+     - name: install for Debian
        apt:
          deb: "{{ grype_debian_url }}"
          state: "{{ grype_desired_state }}"
      - name: scan
        shell: grype "{{ item }}" > "{{ item }}"
-       with_items: 
+       with_items:
          - "{{ grype_src_projects }}"
          - ubuntu:latest
      - name: down file
        fetch:
          src: "{{ item }}"
-         dest: "{{ item }}"
+         dest: '"{{ inventory_hostname }}"-"{{ item }}"'
          flat: yes
        with_items:
          - "{{ grype_src_projects }}"
          - ubuntu:latest
-      
-    when: ansible_os_family == "Debian" 
+
+    when: ansible_os_family == "Debian"
   - block:
-     - name: install for red hat 
-       yum: 
+     - name: install for red hat
+       yum:
          name: "{{  grype_el_url }}"
          state: latest
          disable_gpg_check: yes
@@ -35,11 +35,3 @@
          - "{{ grype_src_projects }}"
          - redhat:latest
     when: ansible_os_family == "RedHat"
-
-  - name: down file 
-    fetch: 
-      src: "{{ item }}"
-      dest: "{{ item }}"
-      flat: yes
-    with_items: 
-      - "{{ grype_src_projects }}"
